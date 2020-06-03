@@ -1,0 +1,60 @@
+<!-- show how to parse .txt file, modify & download -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>demo</title>
+</head>
+
+<body>
+  <button id='btn1'>click</button>
+  <hr />
+  <textarea id='textarea1'></textarea>
+  <hr />
+  <button id='btn2'>download</button>
+  <script>
+    const btn1 = document.getElementById('btn1');
+    const btn2 = document.getElementById('btn2');
+    const textarea1 = document.getElementById('textarea1');
+    btn1.addEventListener('click', chooseTXT);
+    btn2.addEventListener('click', saveTXT);
+
+    async function chooseTXT() {
+      const data = await new Promise(resolve => {
+        const input = document.createElement('input');
+        input.type = 'file';
+
+        // limit file type
+        input.accept = 'text/plain';
+        input.click();
+        input.onchange = () => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            resolve(reader.result);
+          }
+
+          // read file by Blob/File
+          reader.readAsText(input.files[0], ['utf-8']);
+        }
+      });
+      textarea1.value = data;
+    };
+
+    function saveTXT() {
+      const { value } = textarea1;
+      var blob = new Blob(['\ufeff' + value], { type: 'text/txt,charset=UTF-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+
+      // set file name
+      a.download = value.slice(0, 10) + '.txt';
+      a.click();
+    }
+
+  </script>
+</body>
+
+</html>
