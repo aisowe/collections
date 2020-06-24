@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id='app'>
+        <my-layout>
+            <template v-slot:header>
+                <div>header</div>
+            </template>
+            <template v-slot:main>
+                <div>main</div>
+            </template>
+            <template v-slot:footer>
+                <div>footer</div>
+            </template>
+            <template>
+                <div>default</div>
+            </template>
+        </my-layout>
+    </div>
+    <script>
+        Vue.component('my-layout', {
+            template: `
+                <div>
+                    <slot name="header"></slot>
+                    <slot name="main"></slot>
+                    <slot name="footer"></slot>
+                    <slot></slot>
+                </div>
+            `
+        })
+        const vm = new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+
+</html>
