@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model='inputValue' placeholder="write something." />
+        <p>{{oddValue}}</p>
+        <p>{{eveValue}}</p>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                inputValue: ""
+            },
+            computed: {
+                // 获取奇数位数组成的子字符串
+                oddValue: function () {
+                    return [...this.inputValue].filter((item, index) => !Boolean(index % 2)).join('');
+                },
+                // 获取偶数位数组成的子字符串
+                eveValue: function () {
+                    return [...this.inputValue].filter((item, index) => Boolean(index % 2)).join('');
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
