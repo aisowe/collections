@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id='app'>
+        <my-component name='lilie' :age='age'></my-component>
+    </div>
+    <script>
+        Vue.component('my-component', {
+            props: {
+                name: String,
+                age: {
+                    type: Number,
+                    required: true,
+                    validator: function (value) {
+                        if (value < 0 || value % 1 !== 0 || value > 118) {
+                            return false
+                        }
+                        return true
+                    }
+                },
+                gender: {
+                    type: [String, Number],
+                    default: 'male'
+                }
+            },
+            template: `
+                <div>
+                    <p>name: {{name}}</p>
+                    <p>age: {{age}}</p>
+                    <p>gender: {{gender}}</p>
+                </div>
+            `
+        })
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                age: 117
+            }
+        })
+    </script>
+</body>
+
+</html>
