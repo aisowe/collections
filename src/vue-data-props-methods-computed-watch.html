@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h3>{{upperCaseTitle}}</h3>
+        <title-input :props-title="title" @get-title="handleInput"></title-input>
+    </div>
+    <script>
+        Vue.component('title-input', {
+            // script中用：camelCase，template中用：kebab-case
+            props: ['propsTitle'],
+            // props只能接收，不能修改，所以需要用：data、computed、watch一类的间接使用
+            data() {
+                return {
+                    stateTitle: this.propsTitle,
+                }
+            },
+            template: `
+                <div>
+                    <input v-model="stateTitle" @input="$emit('get-title', stateTitle)" />
+                </div>
+            `
+        })
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                title: 'title'
+            },
+            computed: {
+                upperCaseTitle() {
+                    return this.title.toUpperCase()
+                }
+            },
+            methods: {
+                handleInput(stateTitle) {
+                    this.title = stateTitle
+                }
+            },
+            watch: {
+                title: function () {
+                    if (this.title.length <= 10) {
+                        return;
+                    }
+                    alert('Title is too long.')
+                    this.title = this.title.slice(0, 10)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
