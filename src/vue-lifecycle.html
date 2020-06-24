@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id='app'></div>
+    <script>
+        Vue.component('my-component', {
+            data() {
+                return {
+                    count: 0,
+                }
+            },
+            template: `
+                <button @click="handleClick">
+                    {{count}}
+                </button>
+            `,
+            beforeCreate() {
+                console.log('beforeCreate')
+            },
+            created() {
+                console.log('created')
+            },
+            beforeMount() {
+                console.log('beforeMount')
+            },
+            mounted() {
+                console.log('mounted')
+            },
+            beforeUpdate() {
+                console.log('beforeUpdate')
+            },
+            updated() {
+                console.log('updated')
+            },
+            // keep-alive 中组件被激活
+            activated() {
+                console.log('activated')
+            },
+            // keep-alive 中组件失活
+            deactivated() {
+                console.log('deactivated')
+            },
+            beforeDestroy() {
+                console.log('beforeDestroy')
+            },
+            destroyed() {
+                console.log('destroyed')
+                // 制造子组件报错
+                this.notExist()
+            },
+            methods: {
+                handleClick() {
+                    this.count++
+                }
+            }
+        })
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                isDelete: false
+            },
+            template: `
+                <div>
+                    <my-component v-if="!isDelete"></my-component>
+                    <keep-alive>
+                        <my-component v-if="!isDelete"></my-component>
+                    </keep-alive>
+                    <button @click="handleDelete">del</button>
+                </div>
+            `,
+            errorCaptured() {
+                // errorCaptured 只能收到父子组件的报错时才会触发，如果不想全局报错，可以返回false
+                console.log('errorCaptured')
+                return false
+            },
+            methods: {
+                handleDelete() {
+                    this.isDelete = !this.isDelete
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
