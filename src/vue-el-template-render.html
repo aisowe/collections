@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <!-- 用现成dom结构 -->
+    <!-- <div id="app">aaa</div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+        });
+    </script> -->
+
+    <!-- 用模板 -->
+    <!--
+    <div id='app'></div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            template: '<div>bbb</div>'
+        })
+    </script> -->
+
+    <!-- 用渲染函数 -->
+    <!-- <div id='app'></div>
+    <script>
+        Vue.component('my-component', {
+            template: '<div>ccc</div>'
+        })
+        const vm = new Vue({
+            el: '#app',
+            render: h => h('my-component')
+        })
+    </script> -->
+
+    <!-- 用渲染函数 + $mount => runtime way -->
+    <div id='app'></div>
+    <script>
+        Vue.component('my-component', {
+            template: '<div>ddd</div>'
+        })
+        const vm = new Vue({
+            render: h => h('my-component')
+        }).$mount('#app')
+    </script>
+</body>
+
+</html>
