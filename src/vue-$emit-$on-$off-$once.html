@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id='app'>
+        <button @click="incrementCount1">{{count1}}</button>
+        <button @click="incrementCount2">{{count2}}</button>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                count1: 0,
+                count2: 0,
+            },
+            mounted() {
+                // 触发一次后手动销毁监听器
+                this.$on('prevent-count1', function () {
+                    console.log('triger prevent-count1')
+                    this.count1++
+                    this.$off('prevent-count1')
+                });
+                // 触发一次后自动销毁监听器
+                this.$once('prevent-count2', function () {
+                    console.log('triger prevent-count2')
+                    this.count2++
+                });
+            },
+            methods: {
+                incrementCount1() {
+                    this.$emit('prevent-count1')
+                },
+                incrementCount2() {
+                    this.$emit('prevent-count2')
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
