@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <keep-alive :is="toggle"></keep-alive> -->
+        <keep-alive>
+            <my-component1 v-if="toggle === 'my-component1'"></my-component1>
+            <my-component2 v-if="toggle === 'my-component2'"></my-component2>
+        </keep-alive>
+        <button @click="handleClick">toggle</button>
+    </div>
+    <script>
+        Vue.component('my-component1', {
+            template: `
+                <h3>my-component1</h3>
+            `,
+            created() {
+                console.log('created: my-component1')
+            },
+            destoryed() {
+                console.log('disdoryed: my-component1')
+            },
+            activated() {
+                console.log('activated: my-component1')
+            },
+            deactivated() {
+                console.log('deactivated: my-component1')
+            },
+        })
+        Vue.component('my-component2', {
+            template: `
+                <h3 style="color: tomato;">my-component2</h3>
+            `,
+            created() {
+                console.log('created: my-component2')
+            },
+            destoryed() {
+                console.log('disdoryed: my-component2')
+            },
+            activated() {
+                console.log('activated: my-component2')
+            },
+            deactivated() {
+                console.log('deactivated: my-component2')
+            },
+        })
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                toggle: 'my-component1'
+            },
+            methods: {
+                handleClick() {
+                    this.toggle = this.toggle === 'my-component1' ? 'my-component2' : 'my-component1'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
