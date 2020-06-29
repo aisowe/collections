@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <my-component :msg="message"></my-component>
+    </div>
+    <script>
+        Vue.component('my-component', {
+            props: ['msg'],
+            template: `
+                <div @click="handleClick()" style="color: tomato; cursor: pointer;">{{msg}}</div>
+            `,
+            methods: {
+                handleClick(){
+                    if(this.msg === 'Li Lei'){
+                        this.$parent.message = '李雷';
+                        return;
+                    }
+                    this.$parent.message = 'Li Lei';
+                }
+            }
+        });
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                message: 'Li Lei'
+            }
+        })
+    </script>
+</body>
+</html>
