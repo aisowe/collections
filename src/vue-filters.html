@@ -10,9 +10,10 @@
 
 <body>
     <div id="app">
-        <div v-for="item in list" :key="item.id">{{ item.msg | msgPlaceholder }}</div>
+        <div v-for="item in list" :key="item.id">{{ item.msg | capitalize | msgPlaceholder}}</div>
     </div>
     <script>
+        Vue.filter('capitalize', value => value.charAt(0).toUpperCase() + value.slice(1))
         new Vue({
             el: '#app',
             data: {
