@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="inputValue" />
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                inputValue: '',
+                parents: {
+                    father: {
+                        name: 'lilei',
+                        age: 44
+                    },
+                    mother: {
+                        name: 'hanmeimei',
+                        age: 42
+                    }
+                }
+
+            },
+            created() {
+                this.$watch(
+                    function () {
+                        return this.parents.father.name
+                    },
+                    function (newVal, oldVal) {
+                        console.log(newVal, oldVal)
+                    }
+                )
+            },
+            watch: {
+                inputValue: function (value) {
+                    this.parents.father.name = value
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
