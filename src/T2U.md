@@ -259,7 +259,7 @@ const User = {
 
 
 
-下面代码的作用是？
+下面 Nginx 配置文件代码的作用是？
 
 ```nginx
 location / {
@@ -316,6 +316,297 @@ export default new Router({
 ```
 
 **Profile 和 Post 都没有被匹配，只会展示 User 组件**
+
+
+
+路由跳转的声明式与编程式写法分别是什么？
+
+**\<router-link :to="...">**，**router.push(...)**
+
+
+
+下面代码的区别是什么？
+
+```js
+this.$router.push('user')
+```
+
+```js
+this.$router.push('/user')
+```
+
+**前者相对当前路径，后者是相对根路径**
+
+
+
+下面代码中的 name 在哪里定义？
+
+```js
+this.$router.push({ name: 'user', params: { id: '002' } })
+```
+
+**router中，区别于组件名**
+
+
+
+下面代码触发后会跳转到哪个 URL？
+
+```js
+router.push({ path: '/user', params: { userId: '002' }})
+```
+
+```js
+router.push({ path: '/user/${userId}' })
+```
+
+**/user，/user/002**
+
+
+
+`this.$router.push()` 和 `this.$router.replace()` 区别是？
+
+**后者不会向 history 添加新记录，即：不能回退到跳转之前的路由，因为已经替换了**
+
+
+
+`<router-link>` 和 `this.$router.push()` 中 `path` 和 `name` 可以一起用吗？
+
+**不能，后者会覆盖前者**
+
+
+
+什么是命名路由？
+
+**给路由加：name 字段**
+
+
+
+下面代码演示的是什么？
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/',
+      components: {
+        default: Foo,
+        a: Bar,
+        b: Baz
+      }
+    }
+  ]
+})
+```
+
+
+
+下面代码哪里有错？
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/',
+      component: {
+        default: Foo,
+        a: Bar,
+        b: Baz
+      }
+    }
+  ]
+})
+```
+
+**component => components**
+
+
+
+下面代码的作用是什么？
+
+```js
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      component: Home
+    },
+    {
+      path: '/index',
+      redirect: '/'
+    }
+  ]
+})
+```
+
+**/index 重定向到 /**
+
+
+
+下面代码想说明什么？
+
+```js
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      redirect: to => {
+        const flag = window.confirm('r u sure?')
+        if (flag) {
+          return '/sure'
+        }
+        return '/not-sure'
+      }
+    }
+  ]
+})
+```
+
+**路由重定向可以接收一个函数**
+
+
+
+路由重定向（redirect）与路由别名（alias）的区别是什么？
+
+**前者：浏览器地址栏只会体现重定向后的url；**
+
+**后者：浏览器地址栏都可以显示，只是指向的路由组件是同一个；**
+
+
+
+ 下面组件中的 props 作用是什么？
+
+```js
+export default new Router({
+  routes: [
+    {
+      path: '/a/:id',
+      component: ComponentA
+    },
+    {
+      path: '/b/:id',
+      component: ComponentB,
+      props: true
+    },
+  ]
+})
+```
+
+**路由组件传参，用于组件与路由解耦**
+
+
+
+路由组件使用下面的路由配置，请问这个组件中将会自动获得的props是什么？
+
+```js
+export default new Router({
+  routes: [
+    {
+      path: '/b',
+      component: ComponentB,
+      props: (route) => ({ query: route.query.q })
+    },
+  ]
+})
+```
+
+**query**
+
+
+
+路由 hash 模式的缺点是什么？
+
+**丑**
+
+
+
+Vue-Router 中的 “导航” 的意思是？
+
+**路由正在发生改变**
+
+
+
+params 或 query 的改变会触发 进入/离开 的导航守卫吗？
+
+**不会**
+
+
+
+完整的导航解析流程是怎样的？
+
+1. **导航被触发。**
+2. **在失活的组件里调用 `beforeRouteLeave` 守卫。**
+3. **调用全局的 `beforeEach` 守卫。**
+4. **在重用的组件里调用 `beforeRouteUpdate` 守卫 (2.2+)。**
+5. **在路由配置里调用 `beforeEnter`。**
+6. **解析异步路由组件。**
+7. **在被激活的组件里调用 `beforeRouteEnter`。**
+8. **调用全局的 `beforeResolve` 守卫 (2.5+)。**
+9. **导航被确认。**
+10. **调用全局的 `afterEach` 钩子。**
+11. **触发 DOM 更新。**
+12. **用创建好的实例调用 `beforeRouteEnter` 守卫中传给 `next` 的回调函数。**
+
+
+
+全局前置守卫的作用是？
+
+```js
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
+  else next()
+})
+```
+
+**全局设置路由导航规则，常用于检测是否登录，做到特定页面只能登录授权后才能进入的功能**
+
+
+
+什么是 “路由对象” ？
+
+**指：当前激活的路由的状态信息，包含了当前 URL 解析得到的信息，还有 URL 匹配到的路由记录**
+
+
+
+什么是 “全局后置钩子” ？
+
+```js
+router.afterEach((to, from) => {
+  alert(`welcome to ${to.name}`)
+})
+```
+
+**可认为是路由的 onchange 事件**
+
+
+
+router.beforeEach() 和 router.beforeResolve() 区别？
+
+**前者是全局前置守卫，后者是全局解析守卫，前者触发时机更靠前**
+
+
+
+下面代码的作用是什么？
+
+```js
+const router = new Router({
+  routes: [
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login,
+      beforeEnter: (to, from, next) => {
+        if (from.name === 'user') {
+          next(false)
+        } else {
+          next()
+        }
+      }
+    }
+ 	]
+})
+```
+
+**使用路由独享守卫，不允许 name 为 user 的路由直接跳转到 login**
 
 
 
