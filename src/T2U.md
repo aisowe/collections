@@ -893,3 +893,48 @@ mode 有哪几种类型？
 
 
 
+下面代码中的 `person: string` 是什么语法？
+
+```ts
+const sayHello = (person: string) => {
+	console.log(`Hello, ${person}`)
+}
+
+sayHello('Lilei')
+```
+
+**类型注解**
+
+
+
+怎样安装 typescript ？
+
+**sudo npm install -g typescript**
+
+
+
+最简单的 ts 使用方法是？
+
+**tsc demo.ts**
+
+
+
+下面的 `interface` 是什么语法？
+
+```ts
+interface Person {
+	firstName: string,
+	lastName: string
+}
+const sayHello = (person: Person) => {
+	const { firstName, lastName } = person
+	console.log(`Hello, ${firstName} ${lastName}`)
+}
+
+sayHello({ firstName: 'Li', lastName: 'Lei' })
+```
+
+**接口**
+
+
+
