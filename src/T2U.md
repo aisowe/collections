@@ -610,3 +610,286 @@ const router = new Router({
 
 
 
+可以在组件内直接定义的守卫有哪些？
+
+**1、beforeRouteEnter**
+
+**2、beforeRouteUpdate**
+
+**3、beforeRouteLeave**
+
+
+
+不能访问 this 的组件内守卫是？
+
+**beforeRouteEnter**
+
+
+
+守卫和钩子的区别是？
+
+**守卫有 to / from / next 三个参数，钩子只有 to / from**
+
+
+
+支持给传递回调函数给 next 的守卫是？
+
+**beforeRouteEnter**
+
+
+
+为什么 beforeRouteEnter 不能获取组件实例 this ？怎样解决？
+
+**因为当守卫执行前，组件实例尚未创建；**
+
+**给 next 传递回调函数，vm 作函参；**
+
+
+
+什么情况下会触发 beforeRouteUpdate 守卫？
+
+**路由改变，但当前路由组件被复用的情况，如用户切换**
+
+
+
+下面代码的作用是？
+
+```js
+beforeRouteLeave (to, from, next) {
+  const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+  if (answer) {
+    next()
+  } else {
+    next(false)
+  }
+}
+```
+
+**用户没有保存之前提供询问弹窗，如果点击取消，则不会跳转路由**
+
+
+
+怎样获取匹配到的所有路由记录？
+
+**vm.$route.matched**
+
+
+
+下面代码的作用是？
+
+```js
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!auth.loggedIn()) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // 确保一定要调用 next()
+  }
+})
+```
+
+**使用全局前置守卫检查匹配到的路由是否需要登录授权，如果没有，则跳转到登录界面**
+
+
+
+路由元信息怎样设置与获取？
+
+**meta字段对象，$route.matched**
+
+
+
+以下代码演示的是？
+
+```js
+export default {
+  data () {
+    return {
+      post: null,
+      error: null
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    getPost(to.params.id, (err, post) => {
+      next(vm => vm.setData(err, post))
+    })
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.post = null
+    getPost(to.params.id, (err, post) => {
+      this.setData(err, post)
+      next()
+    })
+  },
+  methods: {
+    setData (err, post) {
+      if (err) {
+        this.error = err.toString()
+      } else {
+        this.post = post
+      }
+    }
+  }
+}
+```
+
+**导航完成前获取数据的方法**
+
+
+
+路由跳转时滚动到页面特定位置需要使用什么方法？
+
+**scrollBehavior**
+
+
+
+实现路由懒加载时需要用什么 Babel 插件？
+
+**babel-plugin-syntax-dynamic-import**
+
+
+
+怎样定义一个能够被 Webpack 自动代码分割的异步组件（路由懒加载）？
+
+**const Foo = () => import('./Foo.vue')**
+
+
+
+怎样将某个路由下所有组件都打包到同一个异步块中？
+
+**const Foo = () => import(/* webpackChunkName: "group-foo" */ './Foo.vue')**
+
+
+
+下面代码有什么问题？
+
+```vue
+<template>
+  <div>
+    <router-link to="{name: 'Login'}">to login</router-link>
+  </div>
+</template>
+```
+
+**to 应该用 v-bind 或 :**
+
+
+
+触发下面导航后，目标页面路由是？
+
+```vue
+<template>
+  <div>
+    <router-link
+      :to="{name: 'user', params: {type: 'guest'}, query: {addr: 'beijing'}}"
+    >to user</router-link>
+  </div>
+</template>
+```
+
+**/user/guest?addr=beijing**
+
+
+
+下面两个路由跳转的点击以后的区别是什么？
+
+```vue
+<template>
+  <div>
+    <router-link to="login">$router.push</router-link>
+    <router-link to="login" replace="true">$router.replace</router-link>
+  </div>
+</template>
+```
+
+**前者跳转以后再回退可以到原页面，后者跳转以后再回退会回到原页面的原页面**
+
+
+
+若当前路径是：/user，请问运行下面代码跳转后得到的路由是？
+
+```vue
+<template>
+  <div>
+    <router-link :to="{ path: 'lilei/center'}" append>click</router-link>
+  </div>
+</template>
+```
+
+**/user/lilei/center**
+
+
+
+若当前路径是：/user，请问运行下面代码跳转后得到的路由是？
+
+```vue
+<template>
+  <div>
+    <router-link :to="{ path: '/lilei/center'}" append>click</router-link>
+  </div>
+</template>
+```
+
+**/lilei/center**
+
+
+
+若当前路径是：/user，请问运行下面代码跳转后得到的路由是？
+
+```vue
+<template>
+  <div>
+    <router-link :to="{ path: 'lilei/center'}">click</router-link>
+  </div>
+</template>
+```
+
+**/lilei/center**
+
+
+
+下面代码中 tag 的作用是？
+
+```vue
+<template>
+  <div>
+    <router-link :to="{ path: 'login'}" tag="li">to</router-link>
+  </div>
+</template>
+```
+
+**将默认的 a 标签替换成 li 标签，同时自动绑定导航点击事件**
+
+
+
+下面代码中的 event 属性的作用是？
+
+```vue
+<template>
+  <div>
+    <router-link :to="{ path: 'login'}" :event="['dblclick']">to login</router-link>
+  </div>
+</template>
+```
+
+**鼠标双击时触发导航**
+
+
+
+Vue-Router 中 配置参数：routes 有哪些配置字段？
+
+**path / component / name / components / redirect / props / alias / children / beforeEach / meta / caseSensitive / pathToRegexpOptions**
+
+
+
+mode 有哪几种类型？
+
+**hash / history / abstract**
+
+
+
